@@ -1,14 +1,15 @@
 name: Build Starter Template
 
 on:
+  workflow_dispatch:
   push:
     branches:
-      - main
+      - darwin
     paths:
       - 'templates/starter/**'
   pull_request:
     branches:
-      - main
+      - darwin
     paths:
       - 'templates/starter/**'
 
@@ -17,4 +18,4 @@ jobs:
     uses: ./.github/workflows/build-template.yml
     with:
       template: 'starter'
-      arch: 'x86_64-linux'
+      arch: 'aarch64-darwin'

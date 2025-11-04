@@ -1,32 +1,21 @@
 {
-  description = "General Purpose Configuration for macOS and NixOS";
+  description = "Starter Configuration for MacOS";
+
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
-    home-manager.url = "github:nix-community/home-manager";
-    agenix.url = "github:ryantm/agenix";
-    claude-desktop = {
-      url = "github:k3d3/claude-desktop-linux-flake";
-      inputs = { 
-        nixpkgs.follows = "nixpkgs";
-        flake-utils.follows = "flake-utils";
-      };
-    };
-    plasma-manager = {
-      url = "github:nix-community/plasma-manager";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    # mac-app-util.url = "github:hraban/mac-app-util";
+    home-manager = {
+      url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.home-manager.follows = "home-manager";
     };
     darwin = {
-      url = "github:LnL7/nix-darwin/master";
+      url = "github:nix-darwin/nix-darwin/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-homebrew = {
-      url = "github:zhaofengli-wip/nix-homebrew";
-    };
-    homebrew-bundle = {
-      url = "github:homebrew/homebrew-bundle";
-      flake = false;
+      # url = "github:zhaofengli/nix-homebrew";
+      url = "github:slickag/nix-homebrew/brew-latest-patch-1";
     };
     homebrew-core = {
       url = "github:homebrew/homebrew-core";
@@ -36,28 +25,36 @@
       url = "github:homebrew/homebrew-cask";
       flake = false;
     };
-    disko = {
-      url = "github:nix-community/disko";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    secrets = {
-      url = "git+ssh://git@github.com/dustinlyons/nix-secrets.git";
+    homebrew-cirruslabs = {
+      url = "github:cirruslabs/homebrew-cli";
       flake = false;
     };
-    chaotic = {
-      url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
-      inputs.nixpkgs.follows = "nixpkgs";
+    # homebrew-cloudflare = {
+    #   url = "github:cloudflare/homebrew-cloudflare";
+    #   flake = false;
+    # };
+    homebrew-hashicorp = {
+      url = "github:hashicorp/homebrew-tap";
+      flake = false;
+    };
+    homebrew-stash = {
+      url = "github:otsge/homebrew-stash";
+      flake = false;
+    };
+    homebrew-wailbrew = {
+      url = "github:wickenico/homebrew-wailbrew";
+      flake = false;
     };
   };
-  outputs = { self, darwin, claude-desktop, nix-homebrew, homebrew-bundle, homebrew-core, homebrew-cask, home-manager, plasma-manager, nixpkgs, flake-utils, disko, agenix, secrets, chaotic } @inputs:
+
+  outputs = { self, darwin, nix-homebrew, homebrew-core, homebrew-cask, homebrew-cirruslabs, homebrew-hashicorp, homebrew-stash, homebrew-wailbrew, home-manager, flake-utils, nixpkgs } @inputs:
     let
-      user = "dustin";
-      linuxSystems = [ "x86_64-linux" "aarch64-linux" ];
+      user = "admin";
       darwinSystems = [ "aarch64-darwin" "x86_64-darwin" ];
-      forAllSystems = f: nixpkgs.lib.genAttrs (linuxSystems ++ darwinSystems) f;
+      forAllSystems = f: nixpkgs.lib.genAttrs darwinSystems f;
       devShell = system: let pkgs = nixpkgs.legacyPackages.${system}; in {
         default = with pkgs; mkShell {
-          nativeBuildInputs = with pkgs; [ bashInteractive git age age-plugin-yubikey ];
+          nativeBuildInputs = with pkgs; [ bashInteractive git ];
           shellHook = with pkgs; ''
             export EDITOR=vim
           '';
@@ -69,19 +66,8 @@
           #!/usr/bin/env bash
           PATH=${nixpkgs.legacyPackages.${system}.git}/bin:$PATH
           echo "Running ${scriptName} for ${system}"
-          exec ${self}/apps/${system}/${scriptName} "$@"
+          exec ${self}/apps/${system}/${scriptName}
         '')}/bin/${scriptName}";
-      };
-      mkLinuxApps = system: {
-        "apply" = mkApp "apply" system;
-        "build-switch" = mkApp "build-switch" system;
-        "build-switch-emacs" = mkApp "build-switch-emacs" system;
-        "clean" = mkApp "clean" system;
-        "copy-keys" = mkApp "copy-keys" system;
-        "create-keys" = mkApp "create-keys" system;
-        "check-keys" = mkApp "check-keys" system;
-        "install" = mkApp "install" system;
-        "install-with-secrets" = mkApp "install-with-secrets" system;
       };
       mkDarwinApps = system: {
         "apply" = mkApp "apply" system;
@@ -106,75 +92,49 @@
         };
       };
       devShells = forAllSystems devShell;
-      apps = nixpkgs.lib.genAttrs linuxSystems mkLinuxApps // nixpkgs.lib.genAttrs darwinSystems mkDarwinApps;
+      apps = nixpkgs.lib.genAttrs darwinSystems mkDarwinApps;
+
       darwinConfigurations = nixpkgs.lib.genAttrs darwinSystems (system:
         darwin.lib.darwinSystem {
           inherit system;
           specialArgs = inputs // { inherit user; };
           modules = [
+            # mac-app-util.darwinModules.default
             home-manager.darwinModules.home-manager
+            # (
+            #   { pkgs, config, inputs, ... }:
+            #   {
+            #     home-manager.sharedModules = [
+            #       mac-app-util.homeManagerModules.default
+            #     ];
+            #   }
+            # )
             nix-homebrew.darwinModules.nix-homebrew
             {
               nix-homebrew = {
                 inherit user;
                 enable = true;
+                # Apple Silicon Only: Also install Homebrew under the default Intel prefix for Rosetta 2
+                # enableRosetta = true;
                 taps = {
                   "homebrew/homebrew-core" = homebrew-core;
                   "homebrew/homebrew-cask" = homebrew-cask;
-                  "homebrew/homebrew-bundle" = homebrew-bundle;
+                  "cirruslabs/homebrew-cli" = homebrew-cirruslabs;
+                  # "cloudflare/homebrew-cloudflare" = homebrew-cloudflare;
+                  "hashicorp/homebrew-tap" = homebrew-hashicorp;
+                  "otsge/homebrew-stash" = homebrew-stash;
+                  "wickenico/homebrew-wailbrew" = homebrew-wailbrew;
                 };
                 mutableTaps = false;
                 autoMigrate = true;
               };
             }
+            ({config, ...}: {
+              homebrew.taps = builtins.attrNames config.nix-homebrew.taps;
+            })
             ./hosts/darwin
           ];
         }
       );
-      nixosConfigurations = 
-        # Platform-based configurations (current behavior)
-        nixpkgs.lib.genAttrs linuxSystems (system:
-          nixpkgs.lib.nixosSystem {
-            inherit system;
-            specialArgs = inputs // { inherit user; };
-            modules = [
-              disko.nixosModules.disko
-              chaotic.nixosModules.default
-              home-manager.nixosModules.home-manager {
-                home-manager = {
-                  sharedModules = [ plasma-manager.homeModules.plasma-manager ]; 
-                  useGlobalPkgs = true;
-                  useUserPackages = true;
-                  users.${user} = { config, pkgs, lib, ... }:
-                    import ./modules/nixos/home-manager.nix { inherit config pkgs lib inputs; };
-                };
-              }
-              ./hosts/nixos
-            ];
-          }
-        )
-        
-        // # Named host configurations
-        
-        {
-          garfield = nixpkgs.lib.nixosSystem {
-            system = "x86_64-linux";
-            specialArgs = inputs // { inherit user; };
-            modules = [
-              disko.nixosModules.disko
-              chaotic.nixosModules.default
-              home-manager.nixosModules.home-manager {
-                home-manager = {
-                  sharedModules = [ plasma-manager.homeModules.plasma-manager ]; 
-                  useGlobalPkgs = true;
-                  useUserPackages = true;
-                  users.${user} = { config, pkgs, lib, ... }:
-                    import ./modules/nixos/home-manager.nix { inherit config pkgs lib inputs; };
-                };
-              }
-              ./hosts/nixos/garfield
-            ];
-          };
-        };
     };
 }

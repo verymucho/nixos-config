@@ -1,32 +1,105 @@
 _:
 
 [
-  # Development Tools
-  "homebrew/cask/docker"
-  "visual-studio-code"
-  "iterm2"
-  "postman"
-  "cursor"
+  # 0-9
+  # "1password-cli"
+  # "1password@beta"
 
-  # Productivity Tools
-  "raycast"
+  # A
+  # "appcleaner"
+  # "asana"
 
-  # Browsers
-  "google-chrome"
+  # B
 
-  # Communication Tools - Examples (uncomment as needed)
+  # C
+  # "otsge/stash/ccache-gui"
+  # "claude"
+  "container"
+
+  # D
   # "discord"
-  # "notion"
+  # "homebrew/cask/docker"
+
+  # E
+
+  # F
+  # "font-meslo-lg-nerd-font"
+  "otsge/stash/fuse-t"
+
+  # G
+  # "google-chrome"
+  # "google-chrome@dev"
+
+  # H
+
+  # I
+  # "imazing"
+  "iterm2@beta"
+
+  # J
+
+  # K
+  # "knockknock"
+
+  # L
+  # "loom"
+
+  # M
+  "otsge/stash/mediadownloader"
+  # "mediainfo"
+  # "munki"
+  # "munkiadmin"
+
+  # N
+  # "ngrok"
+
+  # O
+  # "orbstack"
+
+  # P
+  # "otsge/stash/parsec-startup"
+  # "playcover-community"
+  # "postico"
+  # "prefs-editor"
+  # "private-internet-access"
+  # "otsge/stash/progressive-downloader@dev"
+
+  # Q
+
+  # R
+  "rar"
+  # "raycast"
+  # "rclone-ui"
+  # "rustdesk"
+
+  # S
+  # "silicon-app"
   # "slack"
-  # "telegram"
-  # "zoom"
-
-  # Utility Tools - Examples (uncomment as needed)
+  # "sourcetree"
+  # "otsge/stash/stash-app"
+  # "steam"
   # "syncthing"
-  # "1password"
-  # "rectangle"
 
-  # Entertainment Tools - Examples (uncomment as needed)
-  # "spotify"
+  # T
+  # "tableplus"
+  # "telegram"
+
+  # U
+
+  # V
+  # "virtualbuddy"
+  # "visual-studio-code"
   # "vlc"
+
+  # W
+  # "wickenico/wailbrew/wailbrew"
+  # "wireshark"
+  # "wireshark-app"
+
+  # X
+
+  # Y
+
+  # Z
+  # "zoom"
 ]

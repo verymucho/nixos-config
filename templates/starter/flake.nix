@@ -1,19 +1,21 @@
 {
-  description = "Starter Configuration for MacOS and NixOS";
+  description = "Starter Configuration for MacOS";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    home-manager.url = "github:nix-community/home-manager";
+    flake-utils.url = "github:numtide/flake-utils";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    # mac-app-util.url = "github:hraban/mac-app-util";
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     darwin = {
-      url = "github:LnL7/nix-darwin/master";
+      url = "github:nix-darwin/nix-darwin/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-homebrew = {
-      url = "github:zhaofengli-wip/nix-homebrew";
-    };
-    homebrew-bundle = {
-      url = "github:homebrew/homebrew-bundle";
-      flake = false;
+      # url = "github:zhaofengli/nix-homebrew";
+      url = "github:slickag/nix-homebrew/brew-latest-patch-1";
     };
     homebrew-core = {
       url = "github:homebrew/homebrew-core";
@@ -23,18 +25,33 @@
       url = "github:homebrew/homebrew-cask";
       flake = false;
     };
-    disko = {
-      url = "github:nix-community/disko";
-      inputs.nixpkgs.follows = "nixpkgs";
+    # homebrew-cirruslabs = {
+    #   url = "github:cirruslabs/homebrew-cli";
+    #   flake = false;
+    # };
+    # homebrew-cloudflare = {
+    #   url = "github:cloudflare/homebrew-cloudflare";
+    #   flake = false;
+    # };
+    # homebrew-hashicorp = {
+    #   url = "github:hashicorp/homebrew-tap";
+    #   flake = false;
+    # };
+    homebrew-stash = {
+      url = "github:otsge/homebrew-stash";
+      flake = false;
     };
+    # homebrew-wailbrew = {
+    #   url = "github:wickenico/homebrew-wailbrew";
+    #   flake = false;
+    # };
   };
 
-  outputs = { self, darwin, nix-homebrew, homebrew-bundle, homebrew-core, homebrew-cask, home-manager, nixpkgs, disko } @inputs:
+  outputs = { self, darwin, nix-homebrew, homebrew-core, homebrew-cask, homebrew-stash, home-manager, flake-utils, nixpkgs } @inputs:
     let
       user = "%USER%";
-      linuxSystems = [ "x86_64-linux" "aarch64-linux" ];
       darwinSystems = [ "aarch64-darwin" "x86_64-darwin" ];
-      forAllSystems = f: nixpkgs.lib.genAttrs (linuxSystems ++ darwinSystems) f;
+      forAllSystems = f: nixpkgs.lib.genAttrs darwinSystems f;
       devShell = system: let pkgs = nixpkgs.legacyPackages.${system}; in {
         default = with pkgs; mkShell {
           nativeBuildInputs = with pkgs; [ bashInteractive git ];
@@ -52,15 +69,6 @@
           exec ${self}/apps/${system}/${scriptName}
         '')}/bin/${scriptName}";
       };
-      mkLinuxApps = system: {
-        "apply" = mkApp "apply" system;
-        "build-switch" = mkApp "build-switch" system;
-        "clean" = mkApp "clean" system;
-        "copy-keys" = mkApp "copy-keys" system;
-        "create-keys" = mkApp "create-keys" system;
-        "check-keys" = mkApp "check-keys" system;
-        "install" = mkApp "install" system;
-      };
       mkDarwinApps = system: {
         "apply" = mkApp "apply" system;
         "build" = mkApp "build" system;
@@ -74,49 +82,49 @@
     in
     {
       devShells = forAllSystems devShell;
-      apps = nixpkgs.lib.genAttrs linuxSystems mkLinuxApps // nixpkgs.lib.genAttrs darwinSystems mkDarwinApps;
+      apps = nixpkgs.lib.genAttrs darwinSystems mkDarwinApps;
 
-      darwinConfigurations = nixpkgs.lib.genAttrs darwinSystems (system: let
-        user = "%USER%";
-      in
+      darwinConfigurations = nixpkgs.lib.genAttrs darwinSystems (system:
         darwin.lib.darwinSystem {
           inherit system;
-          specialArgs = inputs;
+          specialArgs = inputs // { inherit user; };
           modules = [
+            # mac-app-util.darwinModules.default
             home-manager.darwinModules.home-manager
+            # (
+            #   { pkgs, config, inputs, ... }:
+            #   {
+            #     home-manager.sharedModules = [
+            #       mac-app-util.homeManagerModules.default
+            #     ];
+            #   }
+            # )
             nix-homebrew.darwinModules.nix-homebrew
             {
               nix-homebrew = {
                 inherit user;
                 enable = true;
+                # Apple Silicon Only: Also install Homebrew under the default Intel prefix for Rosetta 2
+                # enableRosetta = true;
                 taps = {
                   "homebrew/homebrew-core" = homebrew-core;
                   "homebrew/homebrew-cask" = homebrew-cask;
-                  "homebrew/homebrew-bundle" = homebrew-bundle;
+                  # "cirruslabs/homebrew-cli" = homebrew-cirruslabs;
+                  # "cloudflare/homebrew-cloudflare" = homebrew-cloudflare;
+                  # "hashicorp/homebrew-tap" = homebrew-hashicorp;
+                  "otsge/homebrew-stash" = homebrew-stash;
+                  # "wickenico/homebrew-wailbrew" = homebrew-wailbrew;
                 };
                 mutableTaps = false;
                 autoMigrate = true;
               };
             }
+            ({config, ...}: {
+              homebrew.taps = builtins.attrNames config.nix-homebrew.taps;
+            })
             ./hosts/darwin
           ];
         }
       );
-
-      nixosConfigurations = nixpkgs.lib.genAttrs linuxSystems (system: nixpkgs.lib.nixosSystem {
-        inherit system;
-        specialArgs = inputs;
-        modules = [
-          disko.nixosModules.disko
-          home-manager.nixosModules.home-manager {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              users.${user} = import ./modules/nixos/home-manager.nix;
-            };
-          }
-          ./hosts/nixos
-        ];
-     });
-  };
+    };
 }

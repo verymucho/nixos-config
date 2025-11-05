@@ -79,11 +79,11 @@
     "homebrew-cask": {
       "flake": false,
       "locked": {
-        "lastModified": 1762308194,
-        "narHash": "sha256-aRQ9YTz99M5//iui/A2XXUowZHicM+hXena0+Zyq/PI=",
+        "lastModified": 1762320326,
+        "narHash": "sha256-mSTsyRPXy+f7dUwnPbKQgZ0xr8Ktfk+P/yIPOb9ISpo=",
         "owner": "homebrew",
         "repo": "homebrew-cask",
-        "rev": "bdb6eb11f77d3ec36b5cc8e16eca81cb09c87bf8",
+        "rev": "f38aaa23ba1dcc6709aaae9a12224abd75a15170",
         "type": "github"
       },
       "original": {
@@ -92,19 +92,51 @@
         "type": "github"
       }
     },
+    "homebrew-cirruslabs": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1761928603,
+        "narHash": "sha256-GEI0xsPb5OHcHJmRE9ZaZn06YypTgfpdWkcxIiZ2tGk=",
+        "owner": "cirruslabs",
+        "repo": "homebrew-cli",
+        "rev": "4a83600ab654b1ab214054f824a62a64f1aceee6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "cirruslabs",
+        "repo": "homebrew-cli",
+        "type": "github"
+      }
+    },
     "homebrew-core": {
       "flake": false,
       "locked": {
-        "lastModified": 1762312264,
-        "narHash": "sha256-IGnvTmVt44E39y3cfkZJ9tY3GiwxVdydJzk13H3uh4U=",
+        "lastModified": 1762320396,
+        "narHash": "sha256-zdm1bdveJAlyeL4q4nDkAGkhs1qvMPHhXnDJi2HpaRw=",
         "owner": "homebrew",
         "repo": "homebrew-core",
-        "rev": "a7139de20dc13d3325974f57c4497d0a53770a83",
+        "rev": "2277be3d6538218e5cfa66d4fc33a87f2f859032",
         "type": "github"
       },
       "original": {
         "owner": "homebrew",
         "repo": "homebrew-core",
+        "type": "github"
+      }
+    },
+    "homebrew-hashicorp": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1762282338,
+        "narHash": "sha256-q7prbQQE/Io5TMnLDQ08qVXBWgGhiZmeVuB2s3KfcOE=",
+        "owner": "hashicorp",
+        "repo": "homebrew-tap",
+        "rev": "97d4e7f73692718f667e98332f6f7c5d958c04cc",
+        "type": "github"
+      },
+      "original": {
+        "owner": "hashicorp",
+        "repo": "homebrew-tap",
         "type": "github"
       }
     },
@@ -121,6 +153,22 @@
       "original": {
         "owner": "otsge",
         "repo": "homebrew-stash",
+        "type": "github"
+      }
+    },
+    "homebrew-wailbrew": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1762285774,
+        "narHash": "sha256-G1oGv6I8MWYp4dYOxXkNlLzAKZKPSoVRiO4m4X4B7Fg=",
+        "owner": "wickenico",
+        "repo": "homebrew-wailbrew",
+        "rev": "ee0d25852729abb963ca6c51b8ae1049af84ad8f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "wickenico",
+        "repo": "homebrew-wailbrew",
         "type": "github"
       }
     },
@@ -165,8 +213,11 @@
         "flake-utils": "flake-utils",
         "home-manager": "home-manager",
         "homebrew-cask": "homebrew-cask",
+        "homebrew-cirruslabs": "homebrew-cirruslabs",
         "homebrew-core": "homebrew-core",
+        "homebrew-hashicorp": "homebrew-hashicorp",
         "homebrew-stash": "homebrew-stash",
+        "homebrew-wailbrew": "homebrew-wailbrew",
         "nix-homebrew": "nix-homebrew",
         "nixpkgs": "nixpkgs"
       }

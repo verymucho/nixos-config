@@ -6,12 +6,14 @@ on:
       - darwin
     paths-ignore:
       - '.github/**'
+      - 'flake.lock'
       - 'README.md'
   pull_request:
     branches:
       - darwin
     paths-ignore:
       - '.github/**'
+      - 'flake.lock'
       - 'README.md'
 
 jobs:

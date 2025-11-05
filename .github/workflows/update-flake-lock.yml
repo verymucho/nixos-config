@@ -18,17 +18,18 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
-        with:
-          ref: 'darwin'
+        # with:
+        #   ref: 'darwin'
 
       - name: Install Nix
         uses: nixbuild/nix-quick-install-action@master
 
       - name: Set up cache
-        uses: nix-community/cache-nix-action@main
-        with:
-          primary-key: nix-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('**/*.nix', '**/flake.lock') }}
-          restore-prefixes-first-match: nix-${{ runner.os }}-${{ runner.arch }}
+        uses: DeterminateSystems/magic-nix-cache-action@main
+        # uses: nix-community/cache-nix-action@main
+        # with:
+        #   primary-key: nix-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('**/*.nix', '**/flake.lock') }}
+        #   restore-prefixes-first-match: nix-${{ runner.os }}-${{ runner.arch }}
 
       # - name: Initalize flake
       #   run: |

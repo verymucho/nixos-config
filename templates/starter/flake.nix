@@ -4,18 +4,20 @@
   inputs = {
     flake-utils.url = "github:numtide/flake-utils";
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    # mac-app-util.url = "github:hraban/mac-app-util";
-    home-manager = {
-      url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # nix-homebrew.url = "github:zhaofengli/nix-homebrew";
+    nix-homebrew.url = "github:slickag/nix-homebrew/brew-latest-patch-1";
     darwin = {
       url = "github:nix-darwin/nix-darwin/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nix-homebrew = {
-      # url = "github:zhaofengli/nix-homebrew";
-      url = "github:slickag/nix-homebrew/brew-latest-patch-1";
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    mac-app-util = {
+      # url = "github:hraban/mac-app-util";
+      url = "github:slickag/mac-app-util";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     homebrew-core = {
       url = "github:homebrew/homebrew-core";
@@ -47,7 +49,7 @@
     # };
   };
 
-  outputs = { self, darwin, nix-homebrew, homebrew-core, homebrew-cask, homebrew-stash, home-manager, flake-utils, nixpkgs } @inputs:
+  outputs = { self, darwin, nix-homebrew, homebrew-core, homebrew-cask, homebrew-stash, home-manager, flake-utils, mac-app-util, nixpkgs } @inputs:
     let
       user = "%USER%";
       darwinSystems = [ "aarch64-darwin" "x86_64-darwin" ];
@@ -89,16 +91,16 @@
           inherit system;
           specialArgs = inputs // { inherit user; };
           modules = [
-            # mac-app-util.darwinModules.default
+            mac-app-util.darwinModules.default
             home-manager.darwinModules.home-manager
-            # (
-            #   { pkgs, config, inputs, ... }:
-            #   {
-            #     home-manager.sharedModules = [
-            #       mac-app-util.homeManagerModules.default
-            #     ];
-            #   }
-            # )
+            (
+              { pkgs, config, inputs, ... }:
+              {
+                home-manager.sharedModules = [
+                  mac-app-util.homeManagerModules.default
+                ];
+              }
+            )
             nix-homebrew.darwinModules.nix-homebrew
             {
               nix-homebrew = {

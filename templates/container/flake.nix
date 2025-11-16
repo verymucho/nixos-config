@@ -1,10 +1,9 @@
 {
-  description = "Starter Configuration for MacOS";
+  description = "Basic container configuration";
 
   inputs = {
     flake-utils.url = "github:numtide/flake-utils";
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    # nix-homebrew.url = "github:zhaofengli/nix-homebrew";
     nix-homebrew.url = "github:slickag/nix-homebrew/brew-latest-patch-1";
     darwin = {
       url = "github:nix-darwin/nix-darwin/master";
@@ -12,11 +11,6 @@
     };
     home-manager = {
       url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    mac-app-util = {
-      url = "github:hraban/mac-app-util";
-      inputs.cl-nix-lite.url = "github:verymucho/cl-nix-lite/main";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     homebrew-core = {
@@ -31,27 +25,19 @@
       url = "github:cirruslabs/homebrew-cli";
       flake = false;
     };
-    # homebrew-cloudflare = {
-    #   url = "github:cloudflare/homebrew-cloudflare";
+    # homebrew-hashicorp = {
+    #   url = "github:hashicorp/homebrew-tap";
     #   flake = false;
     # };
-    homebrew-hashicorp = {
-      url = "github:hashicorp/homebrew-tap";
-      flake = false;
-    };
     homebrew-stash = {
       url = "github:otsge/homebrew-stash";
       flake = false;
     };
-    homebrew-wailbrew = {
-      url = "github:wickenico/homebrew-wailbrew";
-      flake = false;
-    };
   };
 
-  outputs = { self, darwin, nix-homebrew, homebrew-core, homebrew-cask, homebrew-cirruslabs, homebrew-hashicorp, homebrew-stash, homebrew-wailbrew, home-manager, mac-app-util, flake-utils, nixpkgs } @inputs:
+  outputs = { self, darwin, nix-homebrew, homebrew-core, homebrew-cask, homebrew-cirruslabs, homebrew-stash, home-manager, flake-utils, nixpkgs } @inputs:
     let
-      user = "admin";
+      user = "%USER%";
       darwinSystems = [ "aarch64-darwin" "x86_64-darwin" ];
       forAllSystems = f: nixpkgs.lib.genAttrs darwinSystems f;
       devShell = system: let pkgs = nixpkgs.legacyPackages.${system}; in {
@@ -83,20 +69,6 @@
       };
     in
     {
-      templates = {
-        container = {
-          path = ./templates/container;
-          description = "Basic container configuration";
-        };
-        starter = {
-          path = ./templates/starter;
-          description = "Starter configuration without secrets";
-        };
-        starter-with-secrets = {
-          path = ./templates/starter-with-secrets;
-          description = "Starter configuration with secrets";
-        };
-      };
       devShells = forAllSystems devShell;
       apps = nixpkgs.lib.genAttrs darwinSystems mkDarwinApps;
 
@@ -105,16 +77,7 @@
           inherit system;
           specialArgs = inputs // { inherit user; };
           modules = [
-            mac-app-util.darwinModules.default
             home-manager.darwinModules.home-manager
-            (
-              { pkgs, config, inputs, ... }:
-              {
-                home-manager.sharedModules = [
-                  mac-app-util.homeManagerModules.default
-                ];
-              }
-            )
             nix-homebrew.darwinModules.nix-homebrew
             {
               nix-homebrew = {
@@ -126,10 +89,8 @@
                   "homebrew/homebrew-core" = homebrew-core;
                   "homebrew/homebrew-cask" = homebrew-cask;
                   "cirruslabs/homebrew-cli" = homebrew-cirruslabs;
-                  # "cloudflare/homebrew-cloudflare" = homebrew-cloudflare;
-                  "hashicorp/homebrew-tap" = homebrew-hashicorp;
+                  # "hashicorp/homebrew-tap" = homebrew-hashicorp;
                   "otsge/homebrew-stash" = homebrew-stash;
-                  "wickenico/homebrew-wailbrew" = homebrew-wailbrew;
                 };
                 mutableTaps = false;
                 autoMigrate = true;
@@ -138,7 +99,7 @@
             ({config, ...}: {
               homebrew.taps = builtins.attrNames config.nix-homebrew.taps;
             })
-            ./hosts/darwin
+            ./host
           ];
         }
       );

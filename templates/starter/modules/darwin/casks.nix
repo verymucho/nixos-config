@@ -14,7 +14,6 @@ _:
   # C
   # "otsge/stash/ccache-gui"
   # "claude"
-  "container"
 
   # D
   # "discord"

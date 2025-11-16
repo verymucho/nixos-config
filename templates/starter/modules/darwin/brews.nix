@@ -5,6 +5,7 @@ _:
   # "ccache"
   # "cirruslabs/cli/softnet"
   # "cirruslabs/cli/tart"
+  "container"
   "container-compose"
   "coreutils"
   # "gat"
@@ -26,6 +27,10 @@ _:
   # "unxip"
   # "wireguard-tools"
   # "yasm"
+  # {
+  #   name = "container";
+  #   args = [ "HEAD" ];
+  # }
   # {
   #   name = "gallery-dl";
   #   args = [ "HEAD" ];

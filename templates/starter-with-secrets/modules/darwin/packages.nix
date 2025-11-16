@@ -36,7 +36,7 @@ with pkgs; [
   # B
   bash-completion # Bash completion scripts
   bat # Cat clone with syntax highlighting
-  bat-extras.core
+  # bat-extras.core
   btop # System monitor and process viewer
 
   # C

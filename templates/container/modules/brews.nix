@@ -1,12 +1,12 @@
 _:
 
 [
-  # "btop"
-  # "ccache"
+  "ca-certificates"
   # "cirruslabs/cli/softnet"
   # "cirruslabs/cli/tart"
-  "container"
-  "container-compose"
+  "cirruslabs/cli/tart-guest-agent"
+  # "container"
+  # "container-compose"
   "coreutils"
   # "gat"
   # "git-lfs"
@@ -23,24 +23,15 @@ _:
   # "qt"
   # "riff"
   # "rustup"
-  # "otsge/stash/curl"
   # "unxip"
   # "wireguard-tools"
   # "yasm"
-  # {
-  #   name = "container";
-  #   args = [ "HEAD" ];
-  # }
   # {
   #   name = "gallery-dl";
   #   args = [ "HEAD" ];
   # }
   # {
   #   name = "git";
-  #   args = [ "HEAD" ];
-  # }
-  # {
-  #   name = "mosh";
   #   args = [ "HEAD" ];
   # }
   {
@@ -67,12 +58,8 @@ _:
   #     name = "otsge/stash/forgejo";
   #     args = [ "HEAD" ];
   #   }
-  #   {
-  #     name = "otsge/stash/rclone";
-  #     args = [ "HEAD" ];
-  #   }
-  #   {
-  #     name = "otsge/stash/taproom";
-  #     args = [ "HEAD" ];
-  #   }
+  {
+    name = "otsge/stash/rclone";
+    args = [ "HEAD" ];
+  }
 ]

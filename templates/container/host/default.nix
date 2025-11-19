@@ -7,8 +7,10 @@ in
     ../modules
   ];
   nix = {
+    channel.enable = false;
     package = pkgs.nix;
     settings = {
+      auto-optimise-store = false;
       trusted-users = [ "@admin" "${user}" ];
       substituters = [ "https://nix-community.cachix.org" ];
       trusted-public-keys = [ "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=" ];
@@ -16,18 +18,22 @@ in
     };
     gc = {
       automatic = true;
-      interval = { Weekday = 0; Hour = 2; Minute = 0; };
-      options = "--delete-older-than 7d";
-    };
-    optimise = {
-      automatic = true;
-      interval.Hour = 4;
+      # interval = { Weekday = 0; Hour = 2; Minute = 0; };
+      interval.Hour = 2;
+      options = "--delete-older-than 1d";
     };
   };
-  environment.systemPackages = with pkgs; [
-    vim
-  ] ++ (import ../modules/packages.nix { inherit pkgs; });
-
+  environment = {
+    systemPackages = with pkgs; [
+      vim
+    ] ++ (import ../modules/packages.nix { inherit pkgs; });
+    variables = {
+      EDITOR="nano";
+      VISUAL="nano";
+    };
+  };
+  programs.zsh.enable = true;
+  programs.zsh.enableGlobalCompInit = false;
   system = {
     checks.verifyNixPath = false;
     primaryUser = user;
@@ -37,6 +43,9 @@ in
         LSQuarantine = false;
       };
       CustomSystemPreferences = {
+        "com.apple.AdLib" = {
+          allowApplePersonalizedAdvertising = false;
+        };
         "com.apple.desktopservices" = {
           # Avoid creating .DS_Store files on network or USB volumes
           DSDontWriteNetworkStores = true;
@@ -61,27 +70,15 @@ in
         NSNavPanelExpandedStateForSaveMode = true;
         NSNavPanelExpandedStateForSaveMode2 = true;
         _HIHideMenuBar = false;
-        # AppleLanguages = [ "en-US" "es-US" ];
-        # AppleLocale = "en_US";
 
-        # 120, 90, 60, 30, 12, 6, 2
-        KeyRepeat = 2;
-
-        # 120, 94, 68, 35, 25, 15
-        InitialKeyRepeat = 15;
+        KeyRepeat = 2; # Values: 120, 90, 60, 30, 12, 6, 2
+        InitialKeyRepeat = 15; # Values: 120, 94, 68, 35, 25, 15
 
         "com.apple.mouse.tapBehavior" = 1;
         "com.apple.sound.beep.volume" = 0.0;
         "com.apple.sound.beep.feedback" = 0;
         "com.apple.swipescrolldirection" = false;
         "com.apple.trackpad.scaling" = 3.0;
-      };
-      dock = {
-        autohide = false;
-        show-recents = false;
-        launchanim = true;
-        orientation = "bottom";
-        tilesize = 48;
       };
       finder = {
         AppleShowAllExtensions = true;

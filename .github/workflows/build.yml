@@ -6,16 +6,16 @@ on:
     branches:
       - darwin
     paths:
-      - 'templates/starter/**'
+      - 'templates/container/**'
   pull_request:
     branches:
       - darwin
     paths:
-      - 'templates/starter/**'
+      - 'templates/container/**'
 
 jobs:
   build-starter-template:
     uses: ./.github/workflows/build-template.yml
     with:
-      template: 'starter'
+      template: 'container'
       arch: 'aarch64-darwin'

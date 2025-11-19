@@ -120,7 +120,7 @@ confirm_details() {
   esac
 }
 
-confirm_details
+# confirm_details
 
 # Function to replace tokens in each file
 replace_tokens() {

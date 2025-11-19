@@ -69,13 +69,14 @@ with pkgs; [
 
   # M
   mkalias
-  moor
+  # moor
 
   # N
   # nano
   # nanorc
   # ncurses # Terminal control library with terminfo database
   # ngrok # Secure tunneling service
+  nh
   # nodejs_24 # Node.js JavaScript runtime (includes npm)
 
   # O
@@ -110,5 +111,5 @@ with pkgs; [
 
   # Z
   zip # ZIP archive creator
-  # zsh-powerlevel10k # Zsh theme
+  zsh-powerlevel10k # Zsh theme
 ] ++ myFonts

@@ -9,7 +9,7 @@ jobs:
   check-build:
     uses: ./.github/workflows/build-template.yml
     with:
-      template: 'starter'
+      template: 'main'
       arch: 'aarch64-darwin'
 
   update-flake:

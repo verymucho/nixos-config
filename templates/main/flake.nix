@@ -60,7 +60,7 @@
 
   outputs = { self, darwin, nix-homebrew, homebrew-core, homebrew-cask, homebrew-cirruslabs, homebrew-hashicorp, homebrew-stash, homebrew-wailbrew, home-manager, mac-app-util, prefmanager, flake-compat, flake-utils, nixpkgs } @inputs:
     let
-      user = "AG";
+      user = "%USER%";
       _1password-shell-plugins = inputs._1password-shell-plugins.hmModules.default;
       darwinSystems = [ "aarch64-darwin" "x86_64-darwin" ];
       forAllSystems = f: nixpkgs.lib.genAttrs darwinSystems f;
@@ -93,24 +93,6 @@
       };
     in
     {
-      templates = {
-        container = {
-          path = ./templates/container;
-          description = "Basic container configuration";
-        };
-        main = {
-          path = ./templates/main;
-          description = "My main configuration";
-        };
-        starter = {
-          path = ./templates/starter;
-          description = "Starter configuration without secrets";
-        };
-        starter-with-secrets = {
-          path = ./templates/starter-with-secrets;
-          description = "Starter configuration with secrets";
-        };
-      };
       devShells = forAllSystems devShell;
       apps = nixpkgs.lib.genAttrs darwinSystems mkDarwinApps;
 

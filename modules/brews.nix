@@ -5,11 +5,13 @@ _:
   # "ccache"
   # "cirruslabs/cli/softnet"
   "cirruslabs/cli/tart"
-  # "container"
+  "container"
   "container-compose"
   "coreutils"
+  "fuc"
   "gat"
   # "git-lfs"
+  "gnu-sed"
   "ipatool"
   "ipsw"
   "launch"
@@ -22,15 +24,16 @@ _:
   "qbittorrent-cli"
   # "qt"
   "riff"
+  "rustic"
   # "rustup"
   # "otsge/stash/curl"
-  "unxip"
+  # "unxip"
   "wireguard-tools"
   # "yasm"
-  {
-    name = "container";
-    args = [ "HEAD" ];
-  }
+  # {
+  #   name = "container";
+  #   args = [ "HEAD" ];
+  # }
   # {
   #   name = "gallery-dl";
   #   args = [ "HEAD" ];
@@ -63,10 +66,10 @@ _:
     name = "otsge/stash/curl";
     args = [ "HEAD" ];
   }
-  #   {
-  #     name = "otsge/stash/forgejo";
-  #     args = [ "HEAD" ];
-  #   }
+  {
+    name = "otsge/stash/forgejo";
+    args = [ "HEAD" ];
+  }
   {
     name = "otsge/stash/rclone";
     args = [ "HEAD" ];

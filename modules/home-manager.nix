@@ -68,6 +68,7 @@ in
         stateVersion = "25.11";
       };
       programs = {} // import ./programs.nix { inherit email name user config pkgs lib; };
+      fonts.fontconfig.enable = true;
       manual.manpages.enable = false;
     };
   };

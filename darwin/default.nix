@@ -1,7 +1,10 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 let
   user = "AG";
   # myEmacs = import ../modules/emacs.nix { inherit pkgs; };
+  nix-sudo = pkgs.writeShellScriptBin "nix-sudo" ''
+    /usr/bin/sudo -D $PWD -H -i $@
+  '';
 in
 {
   imports = [
@@ -29,7 +32,7 @@ in
   environment = {
     systemPackages = with pkgs; [
       # myEmacs
-      vim
+      nix-sudo
     ] ++ (import ../modules/packages.nix { inherit pkgs; });
     variables = {
       EDITOR="nano";

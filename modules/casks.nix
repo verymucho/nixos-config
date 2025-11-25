@@ -3,7 +3,7 @@ _:
 [
   # 0-9
   # "1password-cli"
-  # "1password@beta"
+  "1password@beta"
 
   # A
   # "appcleaner"
@@ -32,7 +32,7 @@ _:
   # H
 
   # I
-  # "imazing"
+  "imazing"
   "iterm2@beta"
 
   # J
@@ -56,10 +56,10 @@ _:
   # "orbstack"
 
   # P
-  # "otsge/stash/parsec-startup"
-  # "playcover-community"
+  "otsge/stash/parsec-startup"
+  "playcover-community"
   # "postico"
-  # "prefs-editor"
+  "prefs-editor"
   "private-internet-access"
   # "otsge/stash/progressive-downloader@dev"
 
@@ -75,7 +75,7 @@ _:
   # "silicon-app"
   # "slack"
   # "sourcetree"
-  # "otsge/stash/stash-app"
+  "otsge/stash/stash-app"
   # "steam"
   # "syncthing"
 

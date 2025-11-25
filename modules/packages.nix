@@ -45,10 +45,11 @@ with pkgs; [
 
   # D
   # delta
+  deno
   devbox
   # direnv # Environment variable management per directory
   # difftastic # Structural diff tool
-  dockutil # Manage icons on the dock
+  # dockutil # Manage icons on the dock
   dos2unix
   dust # Disk usage analyzer
 
@@ -64,7 +65,7 @@ with pkgs; [
   # G
   # gcc # GNU Compiler Collection
   # ghostty # GPU-accelerated terminal emulator
-  gh # GitHub CLI
+  # gh # GitHub CLI
   git
   git-lfs
   # glow # Markdown renderer for terminal
@@ -76,9 +77,9 @@ with pkgs; [
   # hunspell # Spell checker
 
   # I
-  # iftop # Network bandwidth monitor
+  iftop # Network bandwidth monitor
   # imagemagick # Image manipulation toolkit
-  # iperf
+  iperf
   # iterm2
 
   # J
@@ -109,6 +110,7 @@ with pkgs; [
   # ncurses # Terminal control library with terminfo database
   # neofetch # System information tool
   # ngrok # Secure tunneling service
+  nh
   # nodejs_24 # Node.js JavaScript runtime (includes npm)
 
   # O
@@ -131,12 +133,12 @@ with pkgs; [
   # R
   # repomix # AI tooling
   # ripgrep # Fast text search tool
-  # rsync
+  rsync
 
   # S
   # slack # Team communication app
   socat
-  speedtest-go
+  # speedtest-go
   # sqlite # SQL database engine
 
   # T
@@ -149,7 +151,7 @@ with pkgs; [
   # U
   # unrar # RAR archive extractor
   # unzip # ZIP archive extractor
-  # utm
+  utm
   # uv # Python package installer
 
   # W

@@ -23,8 +23,8 @@
     };
     mac-app-util = {
       url = "github:hraban/mac-app-util";
-      inputs.cl-nix-lite.url = "github:verymucho/cl-nix-lite/main";
-      inputs.nixpkgs.follows = "nixpkgs";
+    #   inputs.cl-nix-lite.url = "github:verymucho/cl-nix-lite/main";
+    #   inputs.nixpkgs.follows = "nixpkgs";
     };
     prefmanager = {
       url = "github:malob/prefmanager";
